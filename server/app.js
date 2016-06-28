@@ -1,8 +1,12 @@
 var express = require('express');
 var pg = require('pg');
-var bodyPaser = require('body-parser');
+var bodyParser = require('body-parser');
 
 var app = express();
+
+//body paser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 //Include Routes
 var index = require('../routes/index');
