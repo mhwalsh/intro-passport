@@ -5,7 +5,7 @@ var router = express.Router();
 
 router.post('/',
   passport.authenticate('local', {
-    successRedirect: '/views/user.html',
+    successRedirect: '/views/users.html',
     failureRedirect: '/views/failure.html'
   })
 );

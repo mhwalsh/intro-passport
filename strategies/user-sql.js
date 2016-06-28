@@ -3,6 +3,37 @@ var LocalStrategy = require('passport-local').Strategy;
 var pg = require('pg');
 var connection = require('../modules/connection');
 
+//serialize user
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, passDone) {
+  console.log('called deserializeUser');
+
+  pg.connect(connection, function(err, client, pgDone) {
+    //connection error
+    if(err){
+      console.log(err);
+      res.sendStatus(500);
+    }
+
+    client.query("SELECT * FROM users WHERE id = $1", [id], function(err, results) {
+      pgDone();
+
+      if(result.rows.length >= 1){
+        console.log(result.rows[0]);
+        return passDone(null, result.rows[0]);
+      }
+
+      // handle errors
+      if(err){
+        console.log(err);
+      }
+
+    });
+  });
+});
 
 //local strategy
 passport.use('local', new LocalStrategy(

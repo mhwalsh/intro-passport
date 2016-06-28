@@ -3,6 +3,7 @@ var pg = require('pg');
 var bodyParser = require('body-parser');
 
 var passport = require('../strategies/user-sql.js');
+var session = require('express-session');
 
 var app = express();
 
@@ -12,9 +13,18 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static('public'));
 
+// Passport Session Configuration //
+app.use(session({
+   secret: 'secret',
+   key: 'user',
+   resave: 'true',
+   saveUninitialized: false,
+   cookie: {maxage: 60000, secure: false}
+}));
+
 // init passport
 app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.session());
 
 //Include Routes
 var index = require('../routes/index');
