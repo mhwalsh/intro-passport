@@ -1,6 +1,9 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var pg = require('pg');
+
+//require modules
+var encryptLib = require('../modules/encryption');
 var connection = require('../modules/connection');
 
 //serialize user
@@ -21,9 +24,9 @@ passport.deserializeUser(function(id, passDone) {
     client.query("SELECT * FROM users WHERE id = $1", [id], function(err, results) {
       pgDone();
 
-      if(result.rows.length >= 1){
-        console.log(result.rows[0]);
-        return passDone(null, result.rows[0]);
+      if(results.rows.length >= 1){
+        console.log(results.rows[0]);
+        return passDone(null, results.rows[0]);
       }
 
       // handle errors
@@ -68,7 +71,9 @@ passport.use('local', new LocalStrategy(
 
               var passwordDb = result.rows[0].password;
               //if given password matches dbs password
-              if(password === passwordDb){
+
+              // compare encrypted password with stored password
+              if(encryptLib.comparePassword(password, passwordDb)){
                 console.log('correct pass');
                 return passDone(null, result.rows[0]);
               }

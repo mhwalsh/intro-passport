@@ -3,6 +3,7 @@ var path = require('path');
 var pg = require('pg');
 
 // require module functions
+var encryptLib = require('../modules/encryption');
 var connection = require('../modules/connection');
 
 var router = express.Router();
@@ -19,9 +20,14 @@ router.post('/', function(req, res) {
   //test the db connection
   pg.connect(connection, function (err, client, done) {
 
+    var userToSave = {
+      username: req.body.username,
+      password: encryptLib.encryptPassword(req.body.password)
+    };
+
     //client.query takes the query, params, and optional callback
     client.query("INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id",
-      [req.body.username, req.body.password] ,
+      [userToSave.username, userToSave.password],
         function(err, result) {
 
           done();
