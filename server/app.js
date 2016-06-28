@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static('public'));
 
-// start passport sessions
+// init passport
 app.use(passport.initialize());
 // app.use(passport.session());
 
