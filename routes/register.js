@@ -17,10 +17,25 @@ router.post('/', function(req, res) {
   console.log('req.body.password = ', req.body.password);
 
   //test the db connection
-  var client = new pg.Client(connection);
-  client.connect();
+  pg.connect(connection, function (err, client, done) {
 
-  res.sendStatus(200);
+    //client.query takes the query, params, and optional callback
+    client.query("INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id",
+      [req.body.username, req.body.password] ,
+        function(err, result) {
+
+          done();
+
+          if(err){
+            console.log(err);
+            res.sendStatus(500);
+          }else{
+            //redirect to get on / route
+            console.log('id of registered user = ', result.rows[0].id);
+            res.redirect('/');
+          }
+    });
+  });
 });
 
 module.exports = router;
