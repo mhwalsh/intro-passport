@@ -8,7 +8,7 @@ var connection = require('../modules/connection');
 var router = express.Router();
 
 router.get('/', function(req, res) {
-  res.sendFile(path.resolve('views/register.html'));
+  res.sendFile(path.resolve('public/views/register.html'));
 });
 
 router.post('/', function(req, res) {
