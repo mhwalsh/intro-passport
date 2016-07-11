@@ -1,30 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
   <head>
     <title>Intro Passport SQL</title>
-    <!-- <script type="text/javascript" src ="/public/vendors/angular.min.js"></script> -->
-    <script type="text/javascript" src ="/public/scripts/client.js"></script>
+    <link rel="stylesheet" href="vendors/bootstrap/css/bootstrap.css">
+
+    <script type="text/javascript" src ="vendors/angular/angular.min.js"></script>
+    <script type="text/javascript" src="vendors/angular-route/angular-route.min.js"></script>
+
+    <script type="text/javascript" src ="scripts/client.js"></script>
   </head>
   <body>
     <div class="banner">
       <h1>Register: Passport SQL</h1>
     </div>
-    <div class="login">
-
-      <form action="/register" method="post">
-        <div>
-          <label for="username">Username:</label>
-          <input type="text" name="username" id="username">
-        </div>
-        <div>
-          <label for="password">Password:</label>
-          <input type="password" name="password" id="password">
-        </div>
-        <div>
-          <a href="/">Login</a>
-          <input type="submit" value="Register">
-        </div>
-      </form>
+    <div ng-controller="RegistrationController" class="register">
+      <div>
+        <label for="username">Username:</label>
+        <input ng-model="username" type="text" name="username" id="username">
+      </div>
+      <div>
+        <label for="password">Password:</label>
+        <input ng-model="password" type="password" name="password" id="password">
+      </div>
+      <div>
+        <a href="/">Login</a>
+        <button ng-click="register(username, password)" type="submit">Register</button>
+      </div>
     </div>
   </body>
 </html>
